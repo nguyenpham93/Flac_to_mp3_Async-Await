@@ -1,0 +1,22 @@
+{
+  "name": "runprocess",
+  "version": "1.0.0",
+  "description": "Demo running process from Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "child-process",
+    "node.js"
+  ],
+  "author": "Trịnh Minh Cường",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "child-process": "^1.0.2",
+    "path": "^0.12.7",
+    "recursive-readdir": "^2.1.1",
+    "shelljs": "^0.7.6"
+  }
+}
