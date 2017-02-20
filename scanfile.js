@@ -5,7 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const Promise = require('bluebird');
 
- exports.ScanFile = class {
+
+exports.ScanFile = class {
 
     /*** Constructor
      * @param sourceFolder đường dẫn tới thư mục file flac
@@ -29,32 +30,29 @@ const Promise = require('bluebird');
             if (fs.statSync(name).isDirectory()) {
                 this.getFiles(name, files_);
             } else {
-                files_.push(name);
+                let shortName = this.cutPath(name);
+                files_.push(shortName);
             }
         }
         return files_;
     }
 
+    // To make path shorter
+    cutPath(path){
+        return path.replace(this.srcFolder + '/','');
+    }
+
     /***
      * Hàm kiểm tra file .flac
      * @param file
-     * @returns {*}
+     * @returns true/false
      */
-    // checkFlac(file) {
-    //     return path.extname(file);
-    // }
 
-    // checkFlac() Cach 2
-    checkFlac(file,extname) {
-        if(path.extname(file) === extname)
-        {
-            return true;
-        }else{
-            return false;
-        }
+    // checkFlac()
+    checkFlac(file) {
+        return path.extname(file) === '.flac' ?  true : false;
     }
     
-
     /***
      * Hàm liệt kê danh sách .flac file
      * @param dir
@@ -63,14 +61,10 @@ const Promise = require('bluebird');
     addFlac(dir,check) {
         return new Promise((resolve, reject) => {
             let allFiles = this.getFiles(dir);
-            //console.log(allFiles);
             var flacFiles = [];
             allFiles.forEach(file => {
-                // if (this.checkFlac(file) === '.flac') {
-                //     flacFiles.push({name: file, status: 'not convert'});
-                // }
-                if(check(file,'.flac')){
-                    flacFiles.push({name: file, status: 'not convert'});
+                if(check(file)){
+                    flacFiles.push(file);
                 }
             });
             resolve(flacFiles);

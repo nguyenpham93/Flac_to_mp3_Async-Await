@@ -15,16 +15,18 @@ exports.Converter = class {
     this.destFolder = destFolder;
   }
 
-  /**
-   *
-   * @param inputFile
-   */
-  //TODO: hãy viết hàm để tìm ra outputFile phù hợp dựa vào sourceFolder, destFolder và inputFile
-  // getOutputFile(inputFile){
-  //   let temp = inputFile.replace(this.sourceFolder,this.destFolder);
-  //   let temp1 = temp.replace('.flac','.mp3');
-  //   return temp1;
-  // }
+  /** 
+  * @param arrFlac : mảng chứa objects gồm src .flac & status 
+  */
+  // Module make by Nam
+  mp3Path(arrFlac){
+    let arrMp3 = [];
+    arrFlac.forEach((file) => {
+        let mp3Src = file.replace('.flac', '.mp3');
+            arrMp3.push(mp3Src);
+    });
+    return arrMp3;
+};
 
   /***
    *
@@ -33,22 +35,18 @@ exports.Converter = class {
    */ 
   flacToMp3(inputFile,outputFile) {
     return new Promise((resolve, reject) => {
-
-      // let outputFile = this.getOutputFile(inputFile);
       let tempdir = outputFile.replace("/" + path.basename(outputFile),'');
       // shell module sử dụng để tạo full path
       shell.mkdir('-p',tempdir);
-      const converter = spawn('ffmpeg', ['-y', '-i', inputFile, '-ab', '320k', '-map_metadata', '0', '-id3v2_version', '3', outputFile]);
-
-      converter.stderr.on('data', (data) => {
+        const converter = spawn('ffmpeg', ['-y', '-i', inputFile, '-ab', '320k', '-map_metadata', '0', '-id3v2_version', '3', outputFile]);
+        converter.stderr.on('data', (data) => {
         console.log(`${data}`);
       });
-
       converter.on('close', (code) => {
         if (code === 0) {
-          resolve(inputFile)
+          resolve(inputFile);
         } else {
-          reject('failed to convert');
+          reject(`File ${inputFile} caught error`);
         }
       });
     });
