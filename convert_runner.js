@@ -23,7 +23,6 @@ renderFile = (arrFlac,arrMp3,convert)=>{
             tempFlac.push(file);
             tempMp3.push(arrMp3[index]);
         });
-        let len = arrFlac.length;
         tempFlac.forEach((file,index)=>{
             let inputFile = convert.sourceFolder + '/' + file;
             let outputFile = convert.destFolder + '/' + tempMp3[index];
@@ -34,9 +33,9 @@ renderFile = (arrFlac,arrMp3,convert)=>{
                 convert.flacToMp3(inputFile,outputFile)
                 .then((success)=>{
                     count--;
-                    // if(arrFlac.length == 0){
-                    //     console.timeEnd("convert");
-                    // }
+                    if(arrFlac.length == 0){
+                        console.timeEnd("convert");
+                    }
                     renderFile(arrFlac,arrMp3,convert);
                     },(err)=>{
                         count--;
@@ -62,5 +61,5 @@ async function runner(srcFolder,desFolder){
     renderFile(fileArrFlac,fileArrMp3,myConvert);
 }
 
-// console.time("convert");
+console.time("convert");
 runner(srcFolder,desFolder);
