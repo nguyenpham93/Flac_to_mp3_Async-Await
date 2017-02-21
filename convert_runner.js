@@ -3,40 +3,44 @@ const Converter = require("./converter").Converter;
 const ScanFile = require("./scanfile").ScanFile;
 const Promise = require('bluebird');
 const path = require('path');
-const writer = require('fs').createWriteStream(__dirname + '/log.txt');
+const writer = require('fs').createWriteStream(__dirname + '/log.txt',{'flags': 'a'});
 
 let srcFolder = __dirname + "/flac";
 let desFolder = __dirname + "/mp3";
+let count = 0;
 
 /*** 
     Func chuyển .flac files thành .mp3 files
     Giới hạn 1 files 1 lần convert
     * @param arrFiles : mảng chứa đường dẫn tới các files .flac  
 */
-var count = 0;
 
 renderFile = (arrFlac,arrMp3,convert)=>{
     if(arrFlac.length > 0){
-        var srcFol = convert.srcFolder;
-        var desFol = convert.desFolder;
+        let tempFlac = [];
+        let tempMp3 = [];
         arrFlac.forEach((file,index)=>{
-                let inputFile = srcFolder+ '/' + file;
-                let outputFile = desFolder + '/' + arrMp3[index];
-                if(count < 2){
-                    count++;
-                    arrFlac.shift();
-                    arrMp3.shift();
-                    convert.flacToMp3(inputFile,outputFile)
-                    .then((success)=>{
-                        count--;
-                        // if(arrFlac.length == 0){
-                        //     console.timeEnd("convert");
-                        // }
+            tempFlac.push(file);
+            tempMp3.push(arrMp3[index]);
+        });
+        let len = arrFlac.length;
+        tempFlac.forEach((file,index)=>{
+            let inputFile = convert.sourceFolder + '/' + file;
+            let outputFile = convert.destFolder + '/' + tempMp3[index];
+            if(count < 2){
+                count++;
+                arrFlac.shift();
+                arrMp3.shift();
+                convert.flacToMp3(inputFile,outputFile)
+                .then((success)=>{
+                    count--;
+                    // if(arrFlac.length == 0){
+                    //     console.timeEnd("convert");
+                    // }
                     renderFile(arrFlac,arrMp3,convert);
                     },(err)=>{
                         count--;
-                        writer.write(err);
-                        writer.close();
+                        writer.write(err + '\n'); 
                         renderFile(arrFlac,arrMp3,convert);
                     });
                 }
@@ -60,4 +64,3 @@ async function runner(srcFolder,desFolder){
 
 // console.time("convert");
 runner(srcFolder,desFolder);
-
