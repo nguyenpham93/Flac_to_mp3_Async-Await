@@ -4,7 +4,7 @@
   "description": "Demo running process from Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha -S"
   },
   "keywords": [
     "child-process",
@@ -14,6 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.4.7",
+    "chai": "^3.5.0",
     "child-process": "^1.0.2",
     "path": "^0.12.7",
     "recursive-readdir": "^2.1.1",
