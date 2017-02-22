@@ -1,4 +1,4 @@
-Demo kỹ thuật child-process, BlueBird promise
+<pre>Demo kỹ thuật child-process, BlueBird promise
 Yêu cầu :
 
 Convert file định dạng flac sang mp3
@@ -35,4 +35,4 @@ Convert.checkFileExist(file) : Kiểm tra xem file đã tồn tại chưa, nếu
 3/ convert_runner.js
 
 renderFile(arrFlac,arrMp3,convert) : Tiến hành convert danh sách files flac thành mp3,giới hạn số file chạy, nếu có file lỗi sẽ được xử lý riêng và log vào file log.txt
-runner(srcFolder,desFolder): hàm xử lý chung, gọi hàm này để chạy toàn bộ chương trình +Demo kỹ thuật child-process, BlueBird promise
+runner(srcFolder,desFolder): hàm xử lý chung, gọi hàm này để chạy toàn bộ chương trình +Demo kỹ thuật child-process, BlueBird promise</pre>
